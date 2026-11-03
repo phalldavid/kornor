@@ -168,6 +168,12 @@ class GoogleSource:
         self.http = AuthorizedSession(creds)
         self.g = cfg["google"]
         self._children: dict[str, list[dict]] = {}
+        self.email = info.get("client_email", "")
+        names = {f["name"] for f in self.children(self.g["root_folder_id"])}
+        print(f"Drive folder: {len(names)} item(s) visible to {self.email}")
+        for need in (self.g["projects_folder_name"], self.g["site_images_folder_name"]):
+            if need not in names:
+                print(f"  WARNING: cannot see the '{need}' folder. Share the 'KORNOR Projects' folder with {self.email} (Viewer).")
 
     def _get(self, url: str, **params) -> dict:
         r = self.http.get(url, params=params, timeout=60)
@@ -444,6 +450,10 @@ def build(args) -> None:
     shutil.copytree(ROOT / "static", out / "static")
     (out / ".nojekyll").write_text("")
     (out / "robots.txt").write_text("User-agent: *\n" + ("Allow: /\n" if args.indexable else "Disallow: /\n"))
+    found = [k for k, v in images.items() if v]
+    missing = [k for k, v in images.items() if not v]
+    print(f"Site photos found ({len(found)}): {', '.join(found) or '-'}")
+    print(f"Site photos missing, placeholder shown ({len(missing)}): {', '.join(missing) or '-'}")
     print(f"Built {len(projects)} project(s), {len(featured)} selected, {proc.count} image(s) -> {out}")
 
 

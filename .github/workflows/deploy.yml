@@ -5,7 +5,7 @@ on:
     branches: [main]
   workflow_dispatch:        # "Run workflow" button: rebuild now after changing Drive or the Sheet
   schedule:
-    - cron: "17 */6 * * *"  # automatic rebuild every 6 hours
+    - cron: "17 * * * *"    # automatic rebuild every hour
 
 permissions:
   contents: read

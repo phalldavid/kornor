@@ -21,7 +21,7 @@ The full guide for the team (how to add a project, which photos go where) is the
 
 The site rebuilds itself:
 
-- **every 6 hours**, automatically;
+- **every hour**, automatically (GitHub may run it up to ~30 minutes late);
 - **on demand**: GitHub › **Actions** › **Build and deploy website** › **Run workflow**;
 - whenever anything is pushed to `main`.
 
@@ -36,6 +36,7 @@ A rebuild takes about 1–3 minutes. Photos that were already compressed are reu
 - **Selected work (Home) = Yes** puts the project on the Home page, sorted by **Home order**. It uses the same photos — nothing is uploaded twice.
 - Site photos are matched by file name (any extension): `hero`, `studio-hero`, `try-mengheang`, `la-rachun`, `meas-pharavit`, `khem-phalldavid`, `ken-sreynith`, `architecture`, `structural-design`, `masterplanning`, `urban-planning`, `interior-design`, `3d-visualization`.
 - Missing photos show a grey placeholder instead of breaking the page.
+- Photos of any size are fine: the site crops them to fit each frame, keeping the centre. To keep a different part, set **Focus (optional)** in the Site Images tab, or **Cover focus (optional)** in the Projects tab: `top`, `bottom`, `left`, `right`, `top left` … or two numbers `X% Y%` measured from the left and top edges (e.g. `30% 20%`).
 - JPG, PNG, WebP, HEIC (iPhone) and TIFF are accepted.
 
 ---

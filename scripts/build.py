@@ -61,7 +61,33 @@ COL = {
     "description": "Short description",
     "cover": "Cover photo (file name)",
     "photo_order": "Photo order (optional)",
+    "cover_focus": "Cover focus (optional)",
 }
+
+FOCUS_WORDS = {"top": ("y", 0), "bottom": ("y", 100), "left": ("x", 0), "right": ("x", 100), "center": None, "centre": None, "middle": None}
+
+
+def parse_focus(value: str) -> str | None:
+    """Turn 'top', 'bottom left', '30% 20%' or '30 20' into a CSS object-position. None = centre (default)."""
+    v = (value or "").strip().lower().replace(",", " ")
+    if not v:
+        return None
+    nums = re.findall(r"-?\d+(?:\.\d+)?", v)
+    if len(nums) == 2 and not any(w in v for w in FOCUS_WORDS):
+        x, y = (max(0.0, min(100.0, float(n))) for n in nums)
+        return f"{x:g}% {y:g}%"
+    pos = {"x": 50, "y": 50}
+    known = False
+    for word in v.split():
+        if word in FOCUS_WORDS:
+            known = True
+            if FOCUS_WORDS[word]:
+                axis, val = FOCUS_WORDS[word]
+                pos[axis] = val
+    if not known:
+        print(f"  note: focus value '{value}' not understood, using centre")
+        return None
+    return None if pos == {"x": 50, "y": 50} else f"{pos['x']}% {pos['y']}%"
 
 
 # --------------------------------------------------------------------------- sources
@@ -84,6 +110,9 @@ class SampleSource:
 
     def site_image(self, subfolder: str, filename_stem: str) -> ImageRef | None:
         return None
+
+    def site_focus(self) -> dict:
+        return {}
 
 
 class LocalSource:
@@ -116,6 +145,24 @@ class LocalSource:
             if p.stem.lower() == filename_stem.lower() and p.suffix.lower() in IMAGE_EXTS:
                 return self._ref(p)
         return None
+
+    def site_focus(self) -> dict:
+        f = self.root / "site-images.csv"
+        if not f.exists():
+            return {}
+        with open(f, newline="", encoding="utf-8") as fh:
+            return focus_by_stem(list(csv.DictReader(fh)))
+
+
+def focus_by_stem(rows: list[dict]) -> dict:
+    """Site Images tab rows -> {file-name stem: focus text}."""
+    out = {}
+    for r in rows:
+        name = (r.get("File name") or "").strip()
+        focus_col = next((k for k in r if k and k.strip().lower().startswith("focus")), None)
+        if name and focus_col and (r.get(focus_col) or "").strip():
+            out[Path(name).stem.lower()] = r[focus_col]
+    return out
 
 
 def load_service_account(raw: str) -> dict:
@@ -228,6 +275,14 @@ class GoogleSource:
             return []
         header = [h.strip() for h in values[0]]
         return [dict(zip(header, row + [""] * (len(header) - len(row)))) for row in values[1:]]
+
+    def site_focus(self) -> dict:
+        data = self._get(f"{self.SHEETS}/{self.g['sheet_id']}/values/'Site Images'!A1:Z")
+        values = data.get("values", [])
+        if not values:
+            return {}
+        header = [h.strip() for h in values[0]]
+        return focus_by_stem([dict(zip(header, row + [""] * (len(header) - len(row)))) for row in values[1:]])
 
     def project_images(self, project_id: str) -> list[ImageRef]:
         projects = self.child_folder(self.g["root_folder_id"], self.g["projects_folder_name"])
@@ -400,6 +455,8 @@ def build(args) -> None:
             "cover": images[0] if images else None,
             "url": f"{base}/projects/{slug}/",
         }
+        if images:
+            images[0]["focus"] = parse_focus(row.get(COL["cover_focus"], "") or "")
         p["meta"] = " · ".join(x for x in (p["type"], p["location"], p["year"]) if x)
         projects.append(p)
         print(f"  project {pid} '{name}': {len(images)} photo(s)")
@@ -411,9 +468,14 @@ def build(args) -> None:
     categories = [c for c in dict.fromkeys(p["category"] for p in projects) if c]
 
     # ---- site images (file-name stems from the "Site Images" tab)
+    focus = source.site_focus()
+
     def site_img(sub, stem, alt):
         ref = source.site_image(sub, stem)
-        return proc.process(ref, f"site/{slugify(sub)}", alt=alt) if ref else None
+        im = proc.process(ref, f"site/{slugify(sub)}", alt=alt) if ref else None
+        if im:
+            im["focus"] = parse_focus(focus.get(stem, ""))
+        return im
 
     images = {
         "hero": site_img("Home", "hero", "KORNOR project"),

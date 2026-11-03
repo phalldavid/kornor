@@ -8,6 +8,7 @@ The content is not stored in this repository. It comes from Google:
 |---|---|
 | Project details (name, location, year, description…) | Google Sheet **KORNOR Projects Database**, tab **Projects** |
 | Project photos | Google Drive › **KORNOR Projects › Projects › `<Project ID>` › Website** |
+| People on the Studio page (names, roles, photo on/off) | Google Sheet, tab **Team** |
 | Hero, studio, team and expertise photos | Google Drive › **KORNOR Projects › Site Images** |
 | Studio text, services, contact details, map | `content/site.json` in this repository |
 
@@ -36,6 +37,7 @@ A rebuild takes about 1–3 minutes. Photos that were already compressed are reu
 - **Selected work (Home) = Yes** puts the project on the Home page, sorted by **Home order**. It uses the same photos — nothing is uploaded twice.
 - Site photos are matched by file name (any extension): `hero`, `studio-hero`, `try-mengheang`, `la-rachun`, `meas-pharavit`, `khem-phalldavid`, `ken-sreynith`, `architecture`, `structural-design`, `masterplanning`, `urban-planning`, `interior-design`, `3d-visualization`.
 - Missing photos show a grey placeholder instead of breaking the page.
+- **Team tab:** one row per person. *Group* = Founder or Team; *Show on website* = No hides someone completely; *Show photo* = Yes shows their portrait (from **Site Images › Team**), No shows name and role only. Founders show photos and team members are names-only by default.
 - Photos of any size are fine: the site crops them to fit each frame, keeping the centre. To keep a different part, set **Focus (optional)** in the Site Images tab, or **Cover focus (optional)** in the Projects tab: `top`, `bottom`, `left`, `right`, `top left` … or two numbers `X% Y%` measured from the left and top edges (e.g. `30% 20%`).
 - JPG, PNG, WebP, HEIC (iPhone) and TIFF are accepted.
 

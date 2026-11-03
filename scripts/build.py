@@ -114,6 +114,9 @@ class SampleSource:
     def site_focus(self) -> dict:
         return {}
 
+    def team_rows(self) -> list[dict] | None:
+        return None
+
 
 class LocalSource:
     """Same layout as the Drive folder, on disk (used for testing)."""
@@ -145,6 +148,13 @@ class LocalSource:
             if p.stem.lower() == filename_stem.lower() and p.suffix.lower() in IMAGE_EXTS:
                 return self._ref(p)
         return None
+
+    def team_rows(self) -> list[dict] | None:
+        f = self.root / "team.csv"
+        if not f.exists():
+            return None
+        with open(f, newline="", encoding="utf-8") as fh:
+            return list(csv.DictReader(fh))
 
     def site_focus(self) -> dict:
         f = self.root / "site-images.csv"
@@ -271,6 +281,19 @@ class GoogleSource:
     def project_rows(self) -> list[dict]:
         data = self._get(f"{self.SHEETS}/{self.g['sheet_id']}/values/Projects!A1:Z")
         values = data.get("values", [])
+        if not values:
+            return []
+        header = [h.strip() for h in values[0]]
+        return [dict(zip(header, row + [""] * (len(header) - len(row)))) for row in values[1:]]
+
+    def team_rows(self) -> list[dict] | None:
+        r = self.http.get(f"{self.SHEETS}/{self.g['sheet_id']}/values/'Team'!A1:Z", timeout=60)
+        if r.status_code == 400:  # no "Team" tab yet
+            print("  note: no 'Team' tab in the Sheet, using people from content/site.json")
+            return None
+        if r.status_code != 200:
+            raise SystemExit(f"Google API error {r.status_code} reading the Team tab: {r.text[:400]}")
+        values = r.json().get("values", [])
         if not values:
             return []
         header = [h.strip() for h in values[0]]
@@ -481,8 +504,35 @@ def build(args) -> None:
         "hero": site_img("Home", "hero", "KORNOR project"),
         "studio-hero": site_img("Studio", "studio-hero", "The KORNOR studio"),
     }
-    for person in cfg["studio"]["founders"] + cfg["studio"]["team"]:
-        images[person["image"]] = site_img("Team", person["image"], f"Portrait of {person['name']}")
+    # ---- people (Team tab; falls back to content/site.json)
+    rows = source.team_rows()
+    if rows is None:
+        rows = [{"Order": str(i + 1), "Name": f["name"], "Role": f["role"], "Group": "Founder", "Show on website": "Yes",
+                 "Show photo": "Yes", "Photo file name": f.get("image", ""), "Short bio (optional)": f.get("bio", "")}
+                for i, f in enumerate(cfg["studio"]["founders"])]
+        rows += [{"Order": str(len(rows) + i + 1), "Name": m["name"], "Role": m["role"], "Group": "Team", "Show on website": "Yes",
+                  "Show photo": "No", "Photo file name": m.get("image", "")}
+                 for i, m in enumerate(cfg["studio"]["team"])]
+    people = []
+    for i, r in enumerate(rows):
+        g = lambda k: (r.get(k) or "").strip()
+        name = g("Name")
+        if not name or not yes(g("Show on website") or "Yes"):
+            continue
+        founder = g("Group").lower().startswith("found")
+        stem = Path(g("Photo file name")).stem.lower() or slugify(name.replace("Mr.", "").replace("Ms.", "").replace("Mrs.", ""))
+        show_photo = yes(g("Show photo")) if g("Show photo") else founder
+        people.append({
+            "name": name, "role": g("Role"), "bio": g("Short bio (optional)") or g("Short bio"),
+            "founder": founder, "order": to_int(g("Order"), 1000 + i), "show_photo": show_photo,
+            "photo": site_img("Team", stem, f"Portrait of {name}") if show_photo else None,
+        })
+        if show_photo:
+            images[stem] = people[-1]["photo"]
+    people.sort(key=lambda p: p["order"])
+    founders = [p for p in people if p["founder"]]
+    team = [p for p in people if not p["founder"]]
+    print(f"People: {len(founders)} founder(s), {len(team)} team member(s), {sum(p['show_photo'] for p in people)} with photo")
     for s in cfg["services"]:
         images[s["image"]] = site_img("Expertise", s["image"], s["name"])
 
@@ -491,7 +541,7 @@ def build(args) -> None:
                       trim_blocks=True, lstrip_blocks=True)
     svg = lambda f: (ROOT / "static" / "img" / f).read_text()
     env.globals.update(
-        base=base, site=cfg, images=images, projects=projects, featured=featured, categories=categories,
+        base=base, site=cfg, images=images, projects=projects, featured=featured, founders=founders, team=team, categories=categories,
         logo_svg=svg("logo.svg"), mark_svg=svg("mark.svg"), indexable=args.indexable,
     )
 

@@ -286,3 +286,11 @@ body.no-scroll { overflow: hidden; }
 
 /* backdrop-filter would trap the fixed menu panel inside the header bar, so drop it while the menu is open */
 .site-header.menu-open { -webkit-backdrop-filter: none; backdrop-filter: none; background: #fff; }
+
+/* People shown by name only (photo switched off in the Team tab) */
+.name-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0 var(--gap); }
+.name-list--after { margin-top: clamp(32px, 4vw, 48px); }
+.name-list li { padding: 20px 0; border-top: 1px solid var(--line); }
+.name-list h3 { font-size: 1.15rem; margin-bottom: 2px; }
+.name-list .role { color: var(--navy); font-weight: 600; margin: 0 0 6px; }
+.name-list .muted { font-size: .95rem; margin: 0; }

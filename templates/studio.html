@@ -24,32 +24,47 @@
   </div>
 </section>
 
+{% macro people_block(list, sizes, cols) %}
+  {% set with_photo = list | selectattr("show_photo") | list %}
+  {% set names_only = list | rejectattr("show_photo") | list %}
+  {% if with_photo %}
+  <div class="people people--{{ cols }}">
+    {% for m in with_photo %}
+    <article class="person">
+      <div class="portrait">{{ pic(m.photo, sizes, label=m.name) }}</div>
+      <h3>{{ m.name }}</h3>
+      {% if m.role %}<p class="role">{{ m.role }}</p>{% endif %}
+      {% if m.bio %}<p class="muted">{{ m.bio }}</p>{% endif %}
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if names_only %}
+  <ul class="name-list{% if with_photo %} name-list--after{% endif %}">
+    {% for m in names_only %}
+    <li>
+      <h3>{{ m.name }}</h3>
+      {% if m.role %}<p class="role">{{ m.role }}</p>{% endif %}
+      {% if m.bio %}<p class="muted">{{ m.bio }}</p>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+{% endmacro %}
+
+{% if founders %}
 <section class="container section">
   <div class="section-head"><h2>Founders</h2></div>
-  <div class="people people--2">
-    {% for f in st.founders %}
-    <article class="person">
-      <div class="portrait">{{ pic(images[f.image], "(min-width: 900px) 620px, 100vw", label=f.name) }}</div>
-      <h3>{{ f.name }}</h3>
-      <p class="role">{{ f.role }}</p>
-      <p class="muted">{{ f.bio }}</p>
-    </article>
-    {% endfor %}
-  </div>
+  {{ people_block(founders, "(min-width: 900px) 620px, 100vw", 2) }}
 </section>
+{% endif %}
 
+{% if team %}
 <section class="container section">
   <div class="section-head"><h2>Team</h2></div>
-  <div class="people people--3">
-    {% for m in st.team %}
-    <article class="person">
-      <div class="portrait">{{ pic(images[m.image], "(min-width: 900px) 400px, 50vw", label=m.name) }}</div>
-      <h3>{{ m.name }}</h3>
-      <p class="muted">{{ m.role }}</p>
-    </article>
-    {% endfor %}
-  </div>
+  {{ people_block(team, "(min-width: 900px) 400px, 50vw", 3) }}
 </section>
+{% endif %}
 
 <section class="container section section--last">
   <div class="section-head"><h2>Our approach</h2></div>

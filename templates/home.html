@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% from "_macros.html" import pic, arrow %}
+{% block main %}
+<section class="hero" aria-label="{{ site.name }}">
+  {% if images.hero %}{{ pic(images.hero, "100vw", cls="hero-img", eager=True) }}{% else %}<div class="hero-img hero-fallback"></div>{% endif %}
+  <div class="hero-tint" aria-hidden="true"></div>
+  <h1 class="hero-logo"><span class="sr-only">{{ site.name }}</span><span aria-hidden="true">{{ logo_svg | safe }}</span></h1>
+</section>
+
+<section class="container section statement">
+  <h2 class="statement-text">{{ site.home.statement }}</h2>
+  <a class="text-link" href="{{ base }}/studio/">About the studio →</a>
+</section>
+
+{% if featured %}
+<section class="container section">
+  <div class="section-head">
+    <h2>Selected Projects</h2>
+    <a class="text-link-sm" href="{{ base }}/projects/">All projects →</a>
+  </div>
+  <div class="zigzag">
+    {% for p in featured %}
+    <article class="zz-row{% if loop.index is even %} zz-row--flip{% endif %}">
+      <a class="zz-image card" href="{{ p.url }}">
+        {{ pic(p.cover, "(min-width: 900px) 58vw, 100vw", label=p.name) }}
+        <h3 class="title-band">{{ p.name }}</h3>
+      </a>
+      <div class="zz-text">
+        {% if p.meta %}<p class="kicker">{{ p.meta }}</p>{% endif %}
+        {% if p.description %}<p class="lead">{{ p.description }}</p>{% endif %}
+        <a class="see-link" href="{{ p.url }}">See project {{ arrow() }}</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="container section">
+  <div class="section-head">
+    <h2>Expertise</h2>
+    <a class="text-link-sm" href="{{ base }}/expertise/">What we do →</a>
+  </div>
+  <ul class="service-list">
+    {% for s in site.services %}
+    <li><a href="{{ base }}/expertise/#{{ s.image }}"><span class="num">{{ "%02d" % loop.index }}</span><span>{{ s.name }}</span></a></li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="container section section--last">
+  <div class="cta-band">
+    <div>
+      <h2>Let's talk about your project</h2>
+      <p>{{ site.contact.phone }} · Telegram {{ site.contact.telegram }}</p>
+    </div>
+    <a class="btn btn--light" href="{{ base }}/contact/">Get in touch</a>
+  </div>
+</section>
+{% endblock %}

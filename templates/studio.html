@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% from "_macros.html" import pic %}
+{% set st = site.studio %}
+{% block main %}
+<div class="container page-top-tight">
+  <div class="wide-img">{{ pic(images["studio-hero"], "(min-width: 1344px) 1280px, 100vw", label="Studio", eager=True) }}</div>
+</div>
+
+<section class="container section story">
+  <div class="story-head">
+    <p class="kicker">Studio</p>
+    <h1 class="page-title">Our Story</h1>
+  </div>
+  <div class="story-body">
+    {% for para in st.story %}<p>{{ para }}</p>{% endfor %}
+    {% if site.portfolio_pdf %}<a class="btn btn--outline" href="{{ site.portfolio_pdf }}">Download our portfolio (PDF) ↓</a>{% endif %}
+  </div>
+</section>
+
+<section class="container section">
+  <div class="vm">
+    <div><p class="kicker">Vision</p><p class="vm-vision">{{ st.vision }}</p></div>
+    <div><p class="kicker">Mission</p><p class="vm-mission">{{ st.mission }}</p></div>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head"><h2>Founders</h2></div>
+  <div class="people people--2">
+    {% for f in st.founders %}
+    <article class="person">
+      <div class="portrait">{{ pic(images[f.image], "(min-width: 900px) 620px, 100vw", label=f.name) }}</div>
+      <h3>{{ f.name }}</h3>
+      <p class="role">{{ f.role }}</p>
+      <p class="muted">{{ f.bio }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head"><h2>Team</h2></div>
+  <div class="people people--3">
+    {% for m in st.team %}
+    <article class="person">
+      <div class="portrait">{{ pic(images[m.image], "(min-width: 900px) 400px, 50vw", label=m.name) }}</div>
+      <h3>{{ m.name }}</h3>
+      <p class="muted">{{ m.role }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container section section--last">
+  <div class="section-head"><h2>Our approach</h2></div>
+  <div class="approach">
+    {% for name, text in st.approach %}
+    <div class="approach-item"><h3>{{ name }}</h3><p>{{ text }}</p></div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

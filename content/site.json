@@ -1,0 +1,83 @@
+{
+  "name": "KORNOR Architecture and Structural",
+  "short_name": "KORNOR",
+  "description": "KORNOR is an architecture and structural design studio in Phnom Penh, Cambodia: architecture, structural design, masterplanning, urban planning, interior design and 3D visualization.",
+  "year": 2026,
+
+  "google": {
+    "root_folder_id": "1ClZdn7JY9cxYajFTfrZ4vhTYu1fw74TY",
+    "sheet_id": "1PpCnDMYfxNPK0TFhpBi5gkGSUhW7HjmZHqLLVPlaD3U",
+    "projects_folder_name": "Projects",
+    "site_images_folder_name": "Site Images",
+    "website_subfolder_name": "Website"
+  },
+
+  "contact": {
+    "address_km": "ភូមិ ស្រែអំពិល សង្កាត់ ស្នោរ ខណ្ឌ កំបូល រាជធានីភ្នំពេញ",
+    "address_en": "Phnom Penh, Cambodia",
+    "phone": "+855 12 795 056",
+    "phone_link": "tel:+85512795056",
+    "telegram": "t.me/trymengheang",
+    "telegram_link": "https://t.me/trymengheang",
+    "email": "",
+    "office_hours": "",
+    "facebook": "",
+    "instagram": "",
+    "map_lat": 11.5901407,
+    "map_lng": 104.7869964,
+    "map_zoom": 16,
+    "map_link": "https://maps.app.goo.gl/pxkcPyN9GQ3utV8H6",
+    "formspree_id": ""
+  },
+
+  "portfolio_pdf": "",
+
+  "home": {
+    "statement": "We design buildings for Cambodia's tropical climate and real construction conditions — from site plan and structure to interior detail and final render."
+  },
+
+  "studio": {
+    "story": [
+      "We are a young, hands-on studio that designs buildings and places for Cambodia's tropical climate and real construction conditions. KORNOR was founded in 2026 by Mr. Try Mengheang and Mr. La Rachun to offer clients one small team that can take a project from site plan and structure to interior detail and final render.",
+      "Our size is our advantage. Every project is led directly by a founder, decisions are fast, and the same people who draw the concept stay on the job through permit drawings and construction.",
+      "We work for private homeowners, Borey and property developers, hospitality operators, businesses and public-sector clients in Phnom Penh and the provinces."
+    ],
+    "vision": "To be a trusted Cambodian design studio known for buildings that are comfortable, buildable and built to last in the tropics.",
+    "mission": "To give every client clear, practical design — from masterplan and structure to interior — that respects the budget, the climate and local building rules.",
+    "founders": [
+      {"name": "Mr. Try Mengheang", "role": "CEO & Founder", "image": "try-mengheang", "bio": "Leads company strategy, client relationships, contracts and finance, and gives the final design review on every project."},
+      {"name": "Mr. La Rachun", "role": "Co-Founder · Structural Designer", "image": "la-rachun", "bio": "Leads all structural work — concepts, grids, calculations, foundation and frame design, drawings and site checks — and runs day-to-day delivery."}
+    ],
+    "team": [
+      {"name": "Meas Pharavit", "role": "Architect", "image": "meas-pharavit"},
+      {"name": "Khem Phalldavid", "role": "Architect", "image": "khem-phalldavid"},
+      {"name": "Ken Sreynith", "role": "Architect", "image": "ken-sreynith"}
+    ],
+    "approach": [
+      ["Climate first", "Deep overhangs, louvers and west-side shading; layouts that catch the monsoon winds."],
+      ["Rain and flood ready", "Raised ground floors, generous drainage and stormwater planning on larger sites."],
+      ["Structure and architecture together", "Grids, spans and foundations designed in-house alongside the plans."],
+      ["Buildable and honest", "We draw what local contractors can build and tell clients early what it costs."],
+      ["Local materials", "RC frame and brick, steel long-span roofs, local stone, laterite, tiles and hardwoods."],
+      ["Respect for place", "Lessons from traditional Khmer houses and the New Khmer Architecture of Vann Molyvann."]
+    ]
+  },
+
+  "services": [
+    {"name": "Architecture", "image": "architecture", "text": "Concept design, floor plans, elevations, sections, permit drawings, construction drawings and site supervision.", "typical": "villas, shophouses, link houses, offices, small hotels"},
+    {"name": "Structural Design", "image": "structural-design", "text": "Structural concepts and column grids, calculations, foundation and reinforced concrete frame design, steel roof structures, structural drawings and details, site checks of structural works.", "typical": "villas, shophouses, low- and mid-rise buildings, long-span roofs, renovations and extensions"},
+    {"name": "Masterplanning", "image": "masterplanning", "text": "Site analysis, parcel subdivision, road hierarchy, land-use balance, phasing plans, area and FAR/GFA tables.", "typical": "Borey developments, resorts, mixed-use sites"},
+    {"name": "Urban Planning", "image": "urban-planning", "text": "Density studies, street sections, public space, pedestrian routes, stormwater and green space planning.", "typical": "township plans, district and civic studies"},
+    {"name": "Interior Design", "image": "interior-design", "text": "Space planning, furniture layouts, joinery and millwork drawings, lighting plans, material and finish schedules.", "typical": "homes, offices, cafés, hotel rooms"},
+    {"name": "3D Visualization", "image": "3d-visualization", "text": "Exterior and interior renders, aerial views, walkthrough animations, marketing images from CAD, sketches or site maps.", "typical": "sales materials, client presentations, permit submissions"}
+  ],
+  "supporting_services": "Feasibility studies · Bills of Quantities (USD) · construction permit coordination with MLMUPC · GIS and CAD site data preparation",
+  "process": [
+    ["Brief and site visit", "Understand goals, budget and timeline; visit and survey the site."],
+    ["Site analysis and concept", "Sun, wind, access, flooding and planning limits; 2–3 concepts with massing and a first structural grid."],
+    ["Design development", "Plans, elevations, sections, 3D views and an early cost estimate."],
+    ["Permit drawings", "Architectural and structural permit documents, coordinated with authorities and MEP engineers."],
+    ["Construction drawings and BoQ", "Detailed architectural and structural drawings, schedules and Bills of Quantities for tendering."],
+    ["Site support and handover", "Contractor questions, site checks of architectural and structural work, support to completion."]
+  ]
+}

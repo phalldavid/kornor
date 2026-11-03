@@ -1,0 +1,7 @@
+Project ID,Show on website,Selected work (Home),Home order,Project name,Web address (auto),Category,Project type,Location,Year,Size,Size unit,Our role,Status,Short description,Cover photo (file name),Photo order (optional),Client (internal),Internal notes
+S001,Yes,Yes,1,[Project Name 1],,Residential,[Private villa],[Khan / Province],,,,"[Architecture, Structural Design, Interior Design]",Completed,[2–3 lines of context: client need → design response → result],,,,Sample placeholder shown until the Google database is connected.
+S002,Yes,Yes,2,[Project Name 2],,Borey / Masterplan,[Borey masterplan],[Khan / Province],,,,"[Masterplanning, 3D Visualization]",Design stage,[2–3 lines of context: client need → design response → result],,,,Sample placeholder.
+S003,Yes,Yes,3,[Project Name 3],,Hospitality,[Resort],[Khan / Province],,,,"[Masterplanning, Architecture]",Concept,[2–3 lines of context: client need → design response → result],,,,Sample placeholder.
+S004,Yes,Yes,4,[Project Name 4],,Interior,[Office interior],[Khan / Province],,,,[Interior Design],Completed,[2–3 lines of context: client need → design response → result],,,,Sample placeholder.
+S005,Yes,No,,[Project Name 5],,Structural,[Long-span roof],[Khan / Province],,,,[Structural Design],Completed,[2–3 lines of context: client need → design response → result],,,,Sample placeholder.
+S006,Yes,No,,[Project Name 6],,Urban Planning,[District study],[Khan / Province],,,,[Urban Planning],Concept,[2–3 lines of context: client need → design response → result],,,,Sample placeholder.

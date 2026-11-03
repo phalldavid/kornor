@@ -1,0 +1,105 @@
+{% set c = site.contact %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if title %}{{ title }} · {% endif %}{{ site.name }}</title>
+<meta name="description" content="{{ description or site.description }}">
+{% if not indexable %}<meta name="robots" content="noindex, nofollow">{% endif %}
+<meta property="og:title" content="{% if title %}{{ title }} · {% endif %}{{ site.name }}">
+<meta property="og:description" content="{{ description or site.description }}">
+{% if og_image %}<meta property="og:image" content="{{ og_image }}">{% elif images.hero %}<meta property="og:image" content="{{ images.hero.src }}">{% endif %}
+<meta name="theme-color" content="#1A4E76">
+<link rel="icon" href="{{ base }}/static/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Kantumruy+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ base }}/static/css/site.css">
+<script defer src="{{ base }}/static/js/site.js"></script>
+</head>
+<body class="page-{{ page }}">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header{% if page == 'home' %} site-header--overlay{% endif %}" data-header>
+  <div class="header-inner">
+    <a class="brand" href="{{ base }}/" aria-label="{{ site.short_name }} home">
+      <span class="brand-mark" aria-hidden="true">{{ mark_svg | safe }}</span>
+      <span class="brand-word">{{ site.short_name }}</span>
+    </a>
+    <nav class="nav-desktop" aria-label="Main">
+      <a href="{{ base }}/projects/"{% if page == 'projects' %} aria-current="page"{% endif %}>Projects</a>
+      <a href="{{ base }}/expertise/"{% if page == 'expertise' %} aria-current="page"{% endif %}>Expertise</a>
+      <a href="{{ base }}/studio/"{% if page == 'studio' %} aria-current="page"{% endif %}>Studio</a>
+      <a href="{{ base }}/contact/"{% if page == 'contact' %} aria-current="page"{% endif %}>Contact</a>
+      {% if site.portfolio_pdf %}<a class="nav-accent" href="{{ site.portfolio_pdf }}">Portfolio (PDF) ↓</a>{% endif %}
+    </nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-btn>
+      <span data-menu-label>Menu</span>
+      <span class="burger" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+  </div>
+  <nav class="mobile-panel" id="mobile-menu" aria-label="Mobile" hidden data-menu>
+    <a class="m-link" href="{{ base }}/">Home</a>
+    <a class="m-link" href="{{ base }}/projects/">Projects</a>
+    <a class="m-link" href="{{ base }}/expertise/">Expertise</a>
+    <a class="m-link" href="{{ base }}/studio/">Studio</a>
+    <a class="m-link" href="{{ base }}/contact/">Contact</a>
+    {% if site.portfolio_pdf %}<a class="m-link nav-accent" href="{{ site.portfolio_pdf }}">Portfolio (PDF) ↓</a>{% endif %}
+    <div class="m-quick">
+      <a href="{{ c.phone_link }}">{{ c.phone }}</a>
+      <a href="{{ c.telegram_link }}">Telegram</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+{% block main %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <a class="footer-logo" href="{{ base }}/" aria-label="{{ site.short_name }} home">{{ logo_svg | safe }}</a>
+      <div class="footer-cols">
+        <nav aria-label="Footer">
+          <h2 class="label">Explore</h2>
+          <ul>
+            <li><a href="{{ base }}/projects/">Projects</a></li>
+            <li><a href="{{ base }}/expertise/">Expertise</a></li>
+            <li><a href="{{ base }}/studio/">Studio</a></li>
+            <li><a href="{{ base }}/contact/">Contact</a></li>
+          </ul>
+        </nav>
+        <div>
+          <h2 class="label">Office</h2>
+          <p class="km" lang="km">{{ c.address_km }}</p>
+          <p class="muted small">{{ c.address_en }}</p>
+        </div>
+        <div>
+          <h2 class="label">Contact</h2>
+          <ul>
+            <li><a href="{{ c.phone_link }}">{{ c.phone }}</a></li>
+            <li><a href="{{ c.telegram_link }}">Telegram</a></li>
+            {% if c.email %}<li><a href="mailto:{{ c.email }}">{{ c.email }}</a></li>{% endif %}
+          </ul>
+        </div>
+        {% if c.facebook or c.instagram %}
+        <div>
+          <h2 class="label">Follow</h2>
+          <ul>
+            {% if c.facebook %}<li><a href="{{ c.facebook }}">Facebook</a></li>{% endif %}
+            {% if c.instagram %}<li><a href="{{ c.instagram }}">Instagram</a></li>{% endif %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>© {{ site.year }} {{ site.name }}</span>
+      <a href="#main" class="to-top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

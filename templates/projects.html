@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% from "_macros.html" import pic %}
+{% block main %}
+<div class="container page-top section--last">
+  <p class="kicker">Our work</p>
+  <h1 class="page-title">Projects</h1>
+  <p class="intro">Homes, Borey developments, resorts, interiors and structural work across Phnom Penh and the provinces.</p>
+
+  {% if categories | length > 1 %}
+  <div class="filters" role="group" aria-label="Filter projects by category" data-filters>
+    <button type="button" class="chip" aria-pressed="true" data-filter="all">All</button>
+    {% for cat in categories %}
+    <button type="button" class="chip" aria-pressed="false" data-filter="{{ cat }}">{{ cat }}</button>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if projects %}
+  <div class="project-grid" data-grid>
+    {% for p in projects %}
+    <a class="project-card card" href="{{ p.url }}" data-category="{{ p.category }}">
+      <div class="card-img">{{ pic(p.cover, "(min-width: 1100px) 400px, (min-width: 700px) 50vw, 100vw", label=p.name) }}</div>
+      <h2 class="card-title">{{ p.name }}</h2>
+      {% if p.meta %}<p class="card-meta">{{ p.meta }}</p>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+  <p class="empty" hidden data-empty>No projects in this category yet.</p>
+  {% else %}
+  <p class="empty">Projects are coming soon.</p>
+  {% endif %}
+</div>
+{% endblock %}

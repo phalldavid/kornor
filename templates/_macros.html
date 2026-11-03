@@ -1,0 +1,12 @@
+{# A responsive WebP image, or a labelled placeholder until a photo is added in Drive. #}
+{% macro pic(img, sizes="100vw", label="Photo", cls="", eager=False) -%}
+{% if img %}
+<img class="{{ cls }}" src="{{ img.src }}" srcset="{{ img.srcset }}" sizes="{{ sizes }}" width="{{ img.width }}" height="{{ img.height }}" alt="{{ img.alt }}"{% if eager %} fetchpriority="high"{% else %} loading="lazy" decoding="async"{% endif %}>
+{%- else %}
+<div class="ph {{ cls }}" role="img" aria-label="{{ label }} (photo coming soon)"><span>{{ label }}</span></div>
+{%- endif %}
+{%- endmacro %}
+
+{% macro arrow() -%}
+<svg aria-hidden="true" width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h19"/><path d="M14 1l6 6-6 6"/></svg>
+{%- endmacro %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% from "_macros.html" import pic %}
+{% set p = project %}
+{% set description = p.description %}
+{% set og_image = p.cover.src if p.cover else none %}
+{% block main %}
+<article class="container page-top section--last">
+  <a class="back-link" href="{{ base }}/projects/">← All projects</a>
+  {% if p.category %}<p class="kicker">{{ p.category }}</p>{% endif %}
+  <h1 class="page-title">{{ p.name }}</h1>
+
+  <div class="project-cover">{{ pic(p.cover, "(min-width: 1344px) 1280px, 100vw", label=p.name, eager=True) }}</div>
+
+  <div class="project-info">
+    <dl class="facts">
+      {% if p.type %}<div><dt>Type</dt><dd>{{ p.type }}</dd></div>{% endif %}
+      {% if p.location %}<div><dt>Location</dt><dd>{{ p.location }}</dd></div>{% endif %}
+      {% if p.year %}<div><dt>Year</dt><dd>{{ p.year }}</dd></div>{% endif %}
+      {% if p.size %}<div><dt>Size</dt><dd>{{ p.size }}</dd></div>{% endif %}
+      {% if p.status %}<div><dt>Status</dt><dd>{{ p.status }}</dd></div>{% endif %}
+      {% if p.role %}<div><dt>Our role</dt><dd>{{ p.role }}</dd></div>{% endif %}
+    </dl>
+    {% if p.description %}<p class="lead">{{ p.description }}</p>{% endif %}
+  </div>
+
+  {% if p.images | length > 1 %}
+  <div class="gallery">
+    {% for im in p.images[1:] %}
+    <figure class="gallery-item{% if im.ratio < 1 %} gallery-item--tall{% endif %}">
+      <a href="{{ im.src }}" data-lightbox>{{ pic(im, "(min-width: 900px) 50vw, 100vw") }}</a>
+    </figure>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <nav class="prev-next" aria-label="More projects">
+    {% if p.prev %}<a href="{{ p.prev.url }}"><span class="label">Previous</span>{{ p.prev.name }}</a>{% else %}<span></span>{% endif %}
+    {% if p.next %}<a class="next" href="{{ p.next.url }}"><span class="label">Next</span>{{ p.next.name }}</a>{% endif %}
+  </nav>
+</article>
+{% endblock %}

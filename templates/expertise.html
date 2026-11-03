@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% from "_macros.html" import pic %}
+{% block main %}
+<div class="container page-top">
+  <p class="kicker">What we do</p>
+  <h1 class="page-title">Expertise</h1>
+  <p class="intro">Six connected services that clients can take together or one at a time.</p>
+
+  <div class="services">
+    {% for s in site.services %}
+    <article class="service{% if loop.index is even %} service--flip{% endif %}" id="{{ s.image }}">
+      <div class="service-img">{{ pic(images[s.image], "(min-width: 900px) 50vw, 100vw", label=s.name) }}</div>
+      <div class="service-text">
+        <span class="num">{{ "%02d" % loop.index }}</span>
+        <h2>{{ s.name }}</h2>
+        <p class="lead">{{ s.text }}</p>
+        <p class="muted"><strong>Typical projects</strong> — {{ s.typical }}</p>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  <p class="also"><strong>Also:</strong> {{ site.supporting_services }}</p>
+</div>
+
+<section class="container section section--last">
+  <h2 class="h2">How we work</h2>
+  <p class="intro">Six stages, each ending with client sign-off.</p>
+  <ol class="steps">
+    {% for name, text in site.process %}
+    <li><span class="num">{{ "%02d" % loop.index }}</span><h3>{{ name }}</h3><p>{{ text }}</p></li>
+    {% endfor %}
+  </ol>
+</section>
+{% endblock %}

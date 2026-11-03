@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% set c = site.contact %}
+{% block main %}
+<div class="container page-top section--last">
+  <p class="kicker">Contact</p>
+  <h1 class="page-title">Let's talk about your project</h1>
+
+  <div class="contact-grid">
+    <dl class="contact-details">
+      <div><dt>Office</dt><dd class="km" lang="km">{{ c.address_km }}</dd></div>
+      <div><dt>Phone</dt><dd><a href="{{ c.phone_link }}">{{ c.phone }}</a></dd></div>
+      <div><dt>Telegram</dt><dd><a href="{{ c.telegram_link }}">{{ c.telegram }}</a></dd></div>
+      {% if c.email %}<div><dt>Email</dt><dd><a href="mailto:{{ c.email }}">{{ c.email }}</a></dd></div>{% endif %}
+      {% if c.office_hours %}<div><dt>Office hours</dt><dd>{{ c.office_hours }}</dd></div>{% endif %}
+    </dl>
+
+    {% if c.formspree_id %}
+    <form class="form" action="https://formspree.io/f/{{ c.formspree_id }}" method="POST">
+      <div class="field"><label for="f-name">Name <span class="req">*</span></label><input id="f-name" name="name" autocomplete="name" required></div>
+      <div class="field"><label for="f-contact">Phone or email <span class="req">*</span></label><input id="f-contact" name="contact" autocomplete="tel" required></div>
+      <div class="field"><label for="f-type">Project type</label>
+        <select id="f-type" name="project_type"><option>House or villa</option><option>Shophouse or link house</option><option>Borey or masterplan</option><option>Hotel or resort</option><option>Interior</option><option>Structural design only</option><option>Other</option></select></div>
+      <div class="field"><label for="f-msg">Tell us about your project</label><textarea id="f-msg" name="message" rows="6"></textarea></div>
+      <button class="btn" type="submit">Send message</button>
+    </form>
+    {% else %}
+    <div class="contact-actions">
+      <p class="lead">The quickest way to reach us is Telegram or a phone call.</p>
+      <div class="btn-row">
+        <a class="btn" href="{{ c.telegram_link }}">Message us on Telegram</a>
+        <a class="btn btn--outline" href="{{ c.phone_link }}">Call {{ c.phone }}</a>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="map">
+    <iframe title="Map showing the {{ site.short_name }} office" src="https://maps.google.com/maps?q={{ c.map_lat }},{{ c.map_lng }}&amp;z={{ c.map_zoom }}&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+  </div>
+  <a class="text-link-sm" href="{{ c.map_link }}">Open in Google Maps →</a>
+</div>
+{% endblock %}

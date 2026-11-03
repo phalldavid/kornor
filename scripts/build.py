@@ -118,6 +118,36 @@ class LocalSource:
         return None
 
 
+def load_service_account(raw: str) -> dict:
+    """Parse the GOOGLE_SERVICE_ACCOUNT_JSON secret, forgiving stray text around the JSON.
+
+    Never prints the secret itself, only what is wrong with it.
+    """
+    text = raw.strip()
+    start, end = text.find("{"), text.rfind("}")
+    problem = None
+    if start == -1 or end <= start:
+        problem = "it contains no { ... } block at all"
+    else:
+        try:
+            info = json.loads(text[start:end + 1])
+        except json.JSONDecodeError as e:
+            problem = f"the text between {{ and }} is not valid JSON ({e.msg})"
+        else:
+            missing = [k for k in ("type", "client_email", "private_key") if k not in info]
+            if info.get("type") != "service_account" or missing:
+                problem = "it is JSON but not a service-account key (missing: " + ", ".join(missing or ["type=service_account"]) + ")"
+            else:
+                return info
+    raise SystemExit(
+        "\nERROR: the GitHub secret GOOGLE_SERVICE_ACCOUNT_JSON is not a usable key: " + problem + ".\n"
+        f"  (secret length: {len(text)} characters; a real key is about 2300.)\n"
+        "  Fix: Google Cloud > IAM & Admin > Service accounts > your account > Keys > Add key > JSON.\n"
+        "  Open the downloaded .json file in Notepad, copy ALL of it from the first { to the last },\n"
+        "  and paste it as the secret value (Settings > Secrets and variables > Actions > edit the secret).\n"
+    )
+
+
 class GoogleSource:
     label = "Google Sheet + Drive"
     DRIVE = "https://www.googleapis.com/drive/v3/files"
@@ -127,7 +157,7 @@ class GoogleSource:
         from google.oauth2 import service_account
         from google.auth.transport.requests import AuthorizedSession
 
-        info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
+        info = load_service_account(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
         creds = service_account.Credentials.from_service_account_info(
             info,
             scopes=[
